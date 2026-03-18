@@ -1,0 +1,11 @@
+# Pre-provisioned test subscribers for Open5GS
+# Format: IMSI,K,OPC,APN,SST,SD
+#
+# These match the srsLTE/srsRAN test SIM credentials used in the POWDER OTA lab.
+# PLMN: 998/98 (MCC=998, MNC=98)
+# K and OPC are the standard srsRAN test values.
+# Update if your SIM cards have different credentials.
+998981234560200,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+998981234560201,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+998981234560202,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+998981234560203,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff

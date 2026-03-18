@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs and runtime artifacts
+*.log
+*.pcap
+
+# Build artifacts (if srsRAN is built locally for testing)
+build/
