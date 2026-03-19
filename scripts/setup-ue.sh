@@ -8,14 +8,14 @@
 #
 # Usage: setup-ue.sh <ue_index> [srsran4g_commit]
 #   ue_index:        1-4, determines which IMSI to use (999990000000000 + index - 1)
-#   srsran4g_commit: git ref to build (default: main)
+#   srsran4g_commit: git ref to build (default: master)
 #
 
 set -euo pipefail
 exec > >(tee -a /var/log/startup-ue.log) 2>&1
 
 UE_INDEX="${1:-1}"
-SRSRAN4G_COMMIT="${2:-main}"
+SRSRAN4G_COMMIT="${2:-master}"
 
 REPO_DIR="/local/repository"
 CONFIG_DIR="${REPO_DIR}/config"
