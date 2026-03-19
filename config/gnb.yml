@@ -1,7 +1,7 @@
 # srsRAN Project gNodeB configuration for POWDER Indoor OTA Lab
 # Hardware: NI USRP X310 (ota-x310-2) with UBX160 daughterboard
-# Band: n78 (TDD, 3.5 GHz), 20 MHz, DL ARFCN 640000 (~3590 MHz centre)
-# PLMN: 99898 (MCC=998, MNC=98) — POWDER testbed
+# Band: n78 (TDD, 3.5 GHz), 20 MHz, DL ARFCN 640000 (~3600 MHz centre)
+# PLMN: 999/99 (MCC=999, MNC=99)
 # AMF/UPF: Open5GS running co-located on the same d430 compute node
 
 cu_cp:
@@ -26,8 +26,8 @@ ru_sdr:
   device_args: type=x300,addr=192.168.40.2,master_clock_rate=184.32e6,send_frame_size=8000,recv_frame_size=8000
   srate: 23.04
   otw_format: sc16
-  tx_gain: 20
-  rx_gain: 20
+  tx_gain: 50
+  rx_gain: 40
 
 cell_cfg:
   dl_arfcn: 640000
