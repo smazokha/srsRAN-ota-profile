@@ -1,62 +1,55 @@
-# srsRAN Project gNodeB configuration for POWDER testbed
-# Hardware: NI USRP X310 with UBX160 daughterboard
-# Band: n78 (TDD, 3.5 GHz CBRS/C-band)
-# Bandwidth: 20 MHz
-#
-# This file is a template. The setup script will substitute
-# placeholder values (e.g., __AMF_ADDR__, __GNB_ADDR__) at deploy time.
+# srsRAN Project gNodeB configuration for POWDER Indoor OTA Lab
+# Hardware: NI USRP X310 (ota-x310-2) with UBX160 daughterboard
+# Band: n78 (TDD, 3.5 GHz), 20 MHz, DL ARFCN 640000 (~3590 MHz centre)
+# PLMN: 99898 (MCC=998, MNC=98) — POWDER testbed
+# AMF/UPF: Open5GS running co-located on the same d430 compute node
 
-amf:
-  addr: __AMF_ADDR__                    # Open5GS AMF NGAP address
-  bind_addr: __GNB_ADDR__               # gNB local IP for N2 interface
+cu_cp:
+  amf:
+    addr: 127.0.0.5
+    port: 38412
+    bind_addr: 0.0.0.0
+    supported_tracking_areas:
+      - tac: 1
+        plmn_list:
+          - plmn: "99999"
+            tai_slice_support_list:
+              - sst: 1
+
+cu_up:
+  ngu:
+    socket:
+      - bind_addr: 127.0.0.1    # gNB GTP-U (N3) bind — avoids port 2152 conflict with UPF on 127.0.0.7
 
 ru_sdr:
   device_driver: uhd
-  device_args: type=x300,addr=__X310_ADDR__,master_clock_rate=184.32e6,send_frame_size=8000,recv_frame_size=8000
-  clock: internal                       # Use internal clock; change to "external" if using GPSDO
-  sync: internal                        # Use internal PPS; change to "external" for GPSDO
-  srate: 23.04                          # Sample rate in MHz (23.04 for 20 MHz BW)
-  tx_gain: 50                           # Tx gain in dB (adjust for your RF environment)
-  rx_gain: 40                           # Rx gain in dB (adjust for your RF environment)
-  nof_antennas_dl: 1
-  nof_antennas_ul: 1
-  time_alignment_calibration: 0
+  device_args: type=x300,addr=192.168.40.2,master_clock_rate=184.32e6,send_frame_size=8000,recv_frame_size=8000
+  srate: 23.04
+  otw_format: sc16
+  tx_gain: 20
+  rx_gain: 20
 
 cell_cfg:
-  dl_arfcn: __DL_ARFCN__               # DL center frequency ARFCN
-  band: __NR_BAND__                     # NR band
-  channel_bandwidth_MHz: __CHANNEL_BW__  # Channel bandwidth in MHz
-  common_scs: 30                        # Subcarrier spacing in kHz (30 kHz for n78)
-  plmn: "99898"                         # POWDER test PLMN (MCC=998, MNC=98)
-  tac: 1                                # Tracking Area Code
-
+  dl_arfcn: 640000
+  band: 78
+  channel_bandwidth_MHz: 20
+  common_scs: 30
+  plmn: "99999"
+  tac: 1
+  pci: 1
   pdcch:
     common:
       ss0_index: 0
       coreset0_index: 12
-    dedicated:
-      ss2_type: common
-      dci_format_0_1_and_1_1: false
-
   prach:
     prach_config_index: 1
 
 log:
   filename: /tmp/gnb.log
   all_level: info
-  hex_max_size: 0
 
 pcap:
   mac_enable: false
   mac_filename: /tmp/gnb_mac.pcap
   ngap_enable: false
   ngap_filename: /tmp/gnb_ngap.pcap
-
-metrics:
-  enable_json_metrics: false
-  addr: 172.19.1.4
-  port: 55555
-
-expert:
-  phy:
-    pusch_sinr_calc_method: post_equalization

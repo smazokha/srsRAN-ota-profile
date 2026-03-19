@@ -29,22 +29,22 @@ amf:
 
   guami:
     - plmn_id:
-        mcc: "998"
-        mnc: "98"
+        mcc: "999"
+        mnc: "99"
       amf_id:
         region: 2
         set: 1
 
   tai:
     - plmn_id:
-        mcc: "998"
-        mnc: "98"
+        mcc: "999"
+        mnc: "99"
       tac: 1
 
   plmn_support:
     - plmn_id:
-        mcc: "998"
-        mnc: "98"
+        mcc: "999"
+        mnc: "99"
       s_nssai:
         - sst: 1
 

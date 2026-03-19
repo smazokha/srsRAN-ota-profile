@@ -91,10 +91,20 @@ apt-get install -y -qq \
     libuhd-dev uhd-host \
     git curl wget net-tools iperf3 \
     python3 python3-pip python3-setuptools \
-    mongodb-org || apt-get install -y -qq mongodb \
     gnupg software-properties-common \
     libconfig++-dev libtool autoconf \
     tcpdump wireshark-common tshark
+
+# Install MongoDB 6.0 from the official repo (not in Ubuntu 22.04 default repos)
+if ! command -v mongod &>/dev/null; then
+    echo "  Adding MongoDB 6.0 repository..."
+    curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | \
+        gpg --dearmor -o /usr/share/keyrings/mongodb-server-6.0.gpg
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | \
+        tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+    apt-get update -qq
+    apt-get install -y -qq mongodb-org
+fi
 
 # ---------------------------------------------------------------
 # 2. Install UHD and download FPGA images
@@ -263,12 +273,6 @@ GNB_CONFIG="/etc/srsran/gnb.yml"
 mkdir -p /etc/srsran
 
 cp ${CONFIG_DIR}/gnb.yml ${GNB_CONFIG}
-sed -i "s|__AMF_ADDR__|${AMF_IP}|g"      ${GNB_CONFIG}
-sed -i "s|__GNB_ADDR__|${GNB_IP}|g"      ${GNB_CONFIG}
-sed -i "s|__X310_ADDR__|${X310_ADDR}|g"  ${GNB_CONFIG}
-sed -i "s|__DL_ARFCN__|${DL_ARFCN}|g"    ${GNB_CONFIG}
-sed -i "s|__NR_BAND__|${NR_BAND}|g"      ${GNB_CONFIG}
-sed -i "s|__CHANNEL_BW__|${CHANNEL_BW}|g" ${GNB_CONFIG}
 
 # Install convenience scripts
 chmod +x ${REPO_DIR}/scripts/start-5gc.sh

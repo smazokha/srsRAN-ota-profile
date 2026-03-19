@@ -17,3 +17,5 @@ __pycache__/
 
 # Build artifacts (if srsRAN is built locally for testing)
 build/
+
+subscribers.csv

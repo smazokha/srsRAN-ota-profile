@@ -35,7 +35,8 @@ echo ""
 # Check that AMF is reachable
 AMF_ADDR=$(grep "addr:" ${GNB_CONFIG} | head -1 | awk '{print $2}')
 echo "Checking AMF at ${AMF_ADDR}..."
-if ss -tlnp | grep -q 38412; then
+# NGAP uses SCTP, so check with ss -Slnp (not -tlnp which is TCP only)
+if ss -Slnp | grep -q 38412 || ss -lnp | grep -q 38412; then
     echo "  AMF NGAP port (38412) is listening. Good."
 else
     echo "  WARNING: AMF may not be running. Start 5GC first with: sudo /local/repository/scripts/start-5gc.sh"
