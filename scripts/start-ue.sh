@@ -32,7 +32,7 @@ fi
 
 echo "IMSI: $(grep '^imsi' ${UE_CONF} | awk '{print $3}')"
 echo "Band: $(grep '^bands' ${UE_CONF} | awk '{print $3}')"
-echo "ARFCN: $(grep '^dl_arfcn' ${UE_CONF} | awk '{print $3}')"
+echo "ARFCN: $(grep '^dl_nr_arfcn' ${UE_CONF} | awk '{print $3}')"
 echo ""
 
 # Kill any existing srsUE instance
