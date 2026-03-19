@@ -66,11 +66,14 @@ at_cmd 'AT+QNWPREFCFG="nr5g_band",78' 1
 # Configure APN
 at_cmd 'AT+CGDCONT=1,"IPV4V6","internet"' 1
 
-# Set PLMN manually (998/98 = POWDER test network)
-at_cmd 'AT+COPS=1,2,"99898",12' 1
-
-# Power on radio
+# Power on radio first
 at_cmd "AT+CFUN=1" 5
+
+# Use automatic network selection — modem is already locked to NR5G-SA + n78,
+# so it will find the gNB cell without a slow manual PLMN scan.
+# Manual COPS (AT+COPS=1,2,"99999",12) can take 30-60s which exceeds the
+# at_cmd timeout and leaves the modem stuck in unselected manual mode.
+at_cmd "AT+COPS=0" 2
 
 # ---------------------------------------------------------------
 # Wait for registration

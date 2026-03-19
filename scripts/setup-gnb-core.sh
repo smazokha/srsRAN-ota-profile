@@ -178,71 +178,8 @@ systemctl enable mongod || systemctl enable mongodb || true
 systemctl start mongod || systemctl start mongodb || true
 sleep 5
 
-# Use open5gs-dbctl or direct MongoDB insertion
-if command -v open5gs-dbctl &> /dev/null; then
-    while IFS=',' read -r imsi k opc apn sst sd; do
-        [[ "$imsi" =~ ^#.*$ ]] && continue
-        [[ -z "$imsi" ]] && continue
-        echo "  Adding subscriber: IMSI=${imsi}"
-        open5gs-dbctl add "${imsi}" "${k}" "${opc}" || true
-        open5gs-dbctl type "${imsi}" 1 || true
-    done < "${CONFIG_DIR}/subscribers.csv"
-else
-    # Fallback: use mongosh / mongo to insert subscribers directly
-    while IFS=',' read -r imsi k opc apn sst sd; do
-        [[ "$imsi" =~ ^#.*$ ]] && continue
-        [[ -z "$imsi" ]] && continue
-        echo "  Adding subscriber: IMSI=${imsi}"
-        MONGO_CMD=$(command -v mongosh || command -v mongo)
-        ${MONGO_CMD} --quiet open5gs --eval "
-        db.subscribers.updateOne(
-            { 'imsi': '${imsi}' },
-            { \$set: {
-                'imsi': '${imsi}',
-                'msisdn': [],
-                'imeisv': [],
-                'mme_host': [],
-                'mme_realm': [],
-                'purge_flag': [],
-                'security': {
-                    'k': '${k}',
-                    'amf': '8000',
-                    'op_type': 2,
-                    'op_value': '${opc}',
-                    'op': null
-                },
-                'ambr': {
-                    'downlink': { 'value': 1, 'unit': 3 },
-                    'uplink': { 'value': 1, 'unit': 3 }
-                },
-                'slice': [{
-                    'sst': ${sst},
-                    'default_indicator': true,
-                    'session': [{
-                        'name': '${apn}',
-                        'type': 3,
-                        'pcc_rule': [],
-                        'ambr': {
-                            'downlink': { 'value': 1, 'unit': 3 },
-                            'uplink': { 'value': 1, 'unit': 3 }
-                        },
-                        'qos': {
-                            'index': 9,
-                            'arp': {
-                                'priority_level': 8,
-                                'pre_emption_capability': 1,
-                                'pre_emption_vulnerability': 1
-                            }
-                        }
-                    }]
-                }],
-                'schema_version': 1,
-                '__v': 0
-            }},
-            { upsert: true }
-        );" || true
-    done < "${CONFIG_DIR}/subscribers.csv"
-fi
+# Delegate to the standalone provisioning script
+bash ${REPO_DIR}/scripts/provision-subscribers.sh || true
 
 # ---------------------------------------------------------------
 # 6. Build srsRAN Project

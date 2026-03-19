@@ -154,11 +154,6 @@ if [ -e "${AT}" ]; then
     at-cmd 'AT+QNWPREFCFG="nr5g_band",78' "${AT}" || true
     sleep 1
 
-    # Configure test PLMN (MCC=998, MNC=98 = POWDER test network)
-    echo "  Setting PLMN to 99898..."
-    at-cmd 'AT+COPS=1,2,"99898",12' "${AT}" || true
-    sleep 1
-
     # Configure APN
     echo "  Setting APN..."
     at-cmd 'AT+CGDCONT=1,"IPV4V6","internet"' "${AT}" || true
