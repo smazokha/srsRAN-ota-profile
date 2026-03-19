@@ -71,7 +71,7 @@ while IFS=',' read -r imsi k opc apn sst sd; do
         'security': {
             'k': '${k}',
             'amf': '8000',
-            'op_type': 2,
+            'op_type': 1,
             'op_value': '${opc}',
             'op': null
         },

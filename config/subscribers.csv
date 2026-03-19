@@ -1,0 +1,11 @@
+# Pre-provisioned test subscribers for Open5GS
+# Format: IMSI,K,OPC,APN,SST,SD
+#
+# PLMN: 999/99 (MCC=999, MNC=99) — POWDER testbed SIM cards
+# IMSIs confirmed from AT+CIMI on each NUC (NUC1 = ...000, NUC2 = ...001, etc.)
+# K and OPC are the standard srsRAN test SIM values.
+# Update K/OPC if your SIM cards use different credentials.
+999990000000000,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+999990000000001,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+999990000000002,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff
+999990000000003,00112233445566778899aabbccddeeff,63bfa50ee6523365ff14c1f45f88737d,internet,1,0xffffff

@@ -168,6 +168,11 @@ sed -i "s|__UPF_ADDR__|${UPF_IP}|g" /etc/open5gs/upf.yaml
 # Deploy SMF config
 cp ${CONFIG_DIR}/open5gs-smf.yaml /etc/open5gs/smf.yaml
 
+# Fix NRF serving PLMN (default is 999/70, must match our PLMN 999/99)
+# All NFs register their PLMN identity via NRF; a mismatch causes AUSF to
+# reject auth requests with HTTP 500 even if the subscriber is in MongoDB.
+sed -i 's/mnc: 70/mnc: 99/g' /etc/open5gs/nrf.yaml
+
 # ---------------------------------------------------------------
 # 5. Provision test subscribers
 # ---------------------------------------------------------------
